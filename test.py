@@ -108,14 +108,30 @@ def check_edit_task(driver, taskname):
             time.sleep(1)
 
 
-def check_mark_done():
+def check_mark_done(driver, taskname):
     """Verify proper working of marking task as done"""
-    pass
+    tasks = driver.find_elements_by_css_selector("div[class='note']")
+    for task in tasks:
+        header = task.find_element_by_css_selector("p[class*='noteHeading']")
+        if str(header.text) == taskname:
+            edit_btn = task.find_element_by_css_selector(
+                "a[role='menuitem'] > span[class*='glyphicon-check']")
+            edit_btn.click()
+            time.sleep(1)
+            return
 
 
-def check_remove_task():
+def check_remove_task(driver, taskname):
     """Verify proper working of removing task"""
-    pass
+    tasks = driver.find_elements_by_css_selector("div[class='note']")
+    for task in tasks:
+        header = task.find_element_by_css_selector("p[class*='noteHeading']")
+        if str(header.text) == taskname:
+            rm_btn = task.find_element_by_css_selector(
+                "a[role='menuitem'] > span[class*='glyphicon-trash']")
+            rm_btn.click()
+            time.sleep(1)
+            return
 
 
 def checkif_done():
@@ -147,13 +163,15 @@ def main():
 
     test_string = "helloworld"
 
-    #check_register(driver, test_string)
+    check_register(driver, test_string)
     check_login(driver, test_string)
-    #check_add_category(driver, "katA")
-    #check_add_category(driver, "katB")
-    #check_add_task(driver, "hello", "katA")
-    #check_add_task(driver, "welcome", "katB")
-    check_edit_task(driver, "welcome")
+    check_add_category(driver, "katA")
+    check_add_category(driver, "katB")
+    check_add_task(driver, "bbc", "katA")
+    check_add_task(driver, "agh", "katB")
+    check_edit_task(driver, "agh")
+    check_mark_done(driver, "bbc")
+    check_remove_task(driver, "agh")
     check_logout(driver)
 
     raw_input("Press enter key to exit\n")
