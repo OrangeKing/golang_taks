@@ -6,14 +6,35 @@ from os import system
 from selenium import webdriver
 
 
-def check_register():
+def check_register(driver, test_string):
     """Verify proper working of registration form"""
-    pass
+    uname = driver.find_element_by_css_selector("form[action='/signup/'] >"
+                                                "input[name='username']")
+    upasswd = driver.find_element_by_css_selector("form[action='/signup/'] >"
+                                                  "input[name='password']")
+    uemail = driver.find_element_by_css_selector("form[action='/signup/'] >"
+                                                 "input[name='email']")
+    usubmit = driver.find_element_by_css_selector("form[action='/signup/'] >"
+                                                  "input[type='submit']")
+
+    uname.send_keys(test_string)
+    upasswd.send_keys(test_string)
+    uemail.send_keys(test_string + "@demo.com")
+    usubmit.click()
 
 
-def check_login():
+def check_login(driver, test_string):
     """Verify proper working of login form"""
-    pass
+    uname = driver.find_element_by_css_selector("form[action='/login/'] >"
+                                                "input[name='username']")
+    upasswd = driver.find_element_by_css_selector("form[action='/login/'] >"
+                                                  "input[name='password']")
+    usubmit = driver.find_element_by_css_selector("form[action='/login/'] >"
+                                                  "input[type='submit']")
+
+    uname.send_keys(test_string)
+    upasswd.send_keys(test_string)
+    usubmit.click()
 
 
 def check_add_category():
@@ -60,10 +81,18 @@ def check_logout():
     """Verify proper working of logout task"""
     pass
 
+
 def main():
     """main script"""
-    pass
+    driver = webdriver.Chrome()
+    driver.get("http://localhost:8081")
 
+    test_string = "bambo"
+    check_register(driver, test_string)
+    check_login(driver, test_string)
+
+    raw_input("Press enter key to exit\n")
+    driver.quit()
 
 if __name__ == "__main__":
     try:
