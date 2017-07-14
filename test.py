@@ -1,9 +1,18 @@
 #!/usr/bin/env python2
-"""Python script with selenium test suite for web-app"""
+"""Python script with selenium test suite for web-app
+      implement action chains TODO
+      implement cli verification TODO
+      implement docker container auto building TODO
+      implement random strings TODO
+      implement user input TODO
+      implement page context conditions TODO """
 
+import time
 from os import system
 
 from selenium import webdriver
+from selenium.webdriver.common import action_chains
+from selenium.webdriver.support.ui import Select
 
 
 def check_register(driver, test_string):
@@ -39,44 +48,64 @@ def check_login(driver, test_string):
 
 def check_add_category(driver, test_string):
     """Verify proper working of adding categories"""
-    sidebar = driver.find_element_by_css_selector("span[class*="
-                                                  "'glyphicon-align']")
-
-    # if sidebar.parent._web_element_cls.get_attribute(class) ==
+    # action = action_chains.ActionChains(driver) TODO
+    sidebar = driver.find_element_by_css_selector(
+        "span[class*='glyphicon-align']")
+    # if sidebar.parent._web_element_cls.get_attribute(class) == TODO
     # ("sidebar-toggle sidebar-toggle-opened"):
-
     cname = driver.find_element_by_css_selector(
         "form[action='/add-category/'] > span > input[name='category']")
     csubmit = driver.find_element_by_css_selector(
         "form[action='/add-category/'] > span > input[type='submit']")
 
-    sidebar.click()
-    cname.send_keys(test_string)
-    csubmit.click()
+    sidebar.click(); time.sleep(1)
+    cname.send_keys(test_string); time.sleep(1)
+    csubmit.click(); time.sleep(1)
 
 
-def check_add_task(driver):
+def check_add_task(driver, taskname, category):
     """Verify proper working of adding tasks"""
-    add_btn = driver.find_element_by_css_selector("button[class='floating-action-icon-add']")
-
+    add_btn = driver.find_element_by_css_selector(
+        "button[class*='btn-danger btn glyphicon glyphicon-plus']")
     add_title = driver.find_element_by_css_selector(
         "form[action='/add/'] input[name='title']")
     add_priority = driver.find_elements_by_css_selector(
         "form[action='/add/'] input[name='priority']")
-    add_category = driver.find_elements_by_css_selector(
-        "form[action='/add/'] select[name='category']")
-    add_submit = driver.find_elements_by_css_selector("input[id='addNoteBtn']")
+    add_category = Select(driver.find_element_by_css_selector(
+        "form[action='/add/'] select[name='category']"))
+    add_submit = driver.find_element_by_css_selector("input[id='addNoteBtn']")
 
     add_btn.click()
-    add_title.send_keys("testtask")
-    add_priority[1].click()
-    add_category.value_of_css_property()
+    time.sleep(1)
+    add_title.send_keys(taskname)
+    time.sleep(1)
+    add_priority[1].click()  # mocked, for a time being TODO
+    time.sleep(1)
+    add_category.select_by_value(category)  # not validated TODO
+    time.sleep(1)
     add_submit.click()
 
 
-def check_edit_task():
+def check_edit_task(driver, taskname):
     """Verify proper working of editing task priority"""
-    pass
+    tasks = driver.find_elements_by_css_selector("div[class='note']")
+    for task in tasks:
+        header = task.find_element_by_css_selector("p[class*='noteHeading']")
+        if str(header.text) == taskname:
+            edit_btn = task.find_element_by_css_selector(
+                "a[role='menuitem'] > span[class*='glyphicon-pencil']")
+            edit_btn.click()
+            time.sleep(1)
+
+            edit_priority = driver.find_elements_by_css_selector(
+                "form[action='/update/'] input[name='priority']")
+            edit_submit = driver.find_element_by_css_selector(
+                "div[class='modal-footer'] > input[type='submit']")
+
+            edit_priority[0].click()  # value mocked TODO
+            time.sleep(1)
+            edit_submit.click()
+            time.sleep(1)
 
 
 def check_mark_done():
@@ -116,13 +145,15 @@ def main():
     driver = webdriver.Chrome()
     driver.get("http://localhost:8081")
 
-    test_string = "bambo"
-    # check_register(driver, test_string)
-    check_login(driver, test_string)
+    test_string = "helloworld"
 
-    # check_add_category(driver, "cat1")
-    # check_add_category(driver, "cat2")
-    # check_add_task(driver)
+    #check_register(driver, test_string)
+    check_login(driver, test_string)
+    #check_add_category(driver, "katA")
+    #check_add_category(driver, "katB")
+    #check_add_task(driver, "hello", "katA")
+    #check_add_task(driver, "welcome", "katB")
+    check_edit_task(driver, "welcome")
     check_logout(driver)
 
     raw_input("Press enter key to exit\n")
