@@ -6,20 +6,23 @@ https://github.com/thewhitetulip/Tasks
 ```
 ## Running the application
 *Application runs under Python 2.7.12, for python3 use 2to3 script*
+
 1. **Install prerequisites:**
-```bash
+```shell
 pip2 install selenium
 ```
 Apart from selenium framework, chrome webdriver is needed in a $PATH accessible directory:
 ```
 https://sites.google.com/a/chromium.org/chromedriver/downloads
 ```
+
 2. **Clone/fetch project**
-```bash
+```shell
 git clone git@gitlab.mobica.com:int_noka/selenium_tutorial.git
 ```
+
 3. **Run:**
-```bash
+```shell
  $ ./test.py
 ```
 
