@@ -2,7 +2,6 @@
 """Python script with selenium test suite for web-app
       implement action chains TODO
       implement cli verification TODO
-      implement docker container auto building TODO
       implement random strings TODO
       implement user input TODO
       implement page context conditions TODO """
@@ -13,6 +12,8 @@ from os import system
 from selenium import webdriver
 from selenium.webdriver.common import action_chains
 from selenium.webdriver.support.ui import Select
+
+import docker
 
 
 def check_register(driver, test_string):
@@ -158,6 +159,11 @@ def check_logout(driver):
 
 def main():
     """main script"""
+
+    client = docker.from_env()
+    app_container = client.containers.run(
+        "sele:latest", ports={'8081/tcp': 8081}, detach=True)
+
     driver = webdriver.Chrome()
     driver.get("http://localhost:8081")
 
@@ -175,7 +181,12 @@ def main():
     check_logout(driver)
 
     raw_input("Press enter key to exit\n")
+
     driver.quit()
+
+    app_container.stop()
+    app_container.remove()
+
 
 if __name__ == "__main__":
     try:

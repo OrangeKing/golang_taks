@@ -9,7 +9,7 @@ https://github.com/thewhitetulip/Tasks
 
 1. **Install prerequisites:**
 ```shell
-pip2 install selenium
+pip2 install selenium docker
 ```
 Apart from selenium framework, chrome webdriver is needed in a $PATH accessible directory:
 ```
@@ -20,8 +20,12 @@ https://sites.google.com/a/chromium.org/chromedriver/downloads
 ```shell
 git clone git@gitlab.mobica.com:int_noka/selenium_tutorial.git
 ```
+3. **Run image builder on provided Dockerfile:**
+```shell
+ $ ./docker build .
+```
 
-3. **Run:**
+4. **Run:**
 ```shell
  $ ./test.py
 ```
