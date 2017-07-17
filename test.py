@@ -1,16 +1,17 @@
 #!/usr/bin/env python2
 """Python script with selenium test suite for web-app"""
 
+import random
 from os import system
 
-from selenium import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-
-from selenium.webdriver.support.ui import Select
-
 import docker
-from docker import APIClient
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import Select, WebDriverWait
+
+import namesgenerator
+
 
 def element_waiter(driver, element):
     """Element waiting decorator"""
@@ -19,8 +20,11 @@ def element_waiter(driver, element):
 
 def check_register(driver, test_string):
     """Verify proper working of registration form"""
-    uname = driver.find_element_by_css_selector("form[action='/signup/'] >"
-                                                "input[name='username']")
+    uname = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR,
+                                        "form[action='/signup/'] >"
+                                        "input[name='username']")))
+
     upasswd = driver.find_element_by_css_selector("form[action='/signup/'] >"
                                                   "input[name='password']")
     uemail = driver.find_element_by_css_selector("form[action='/signup/'] >"
@@ -28,24 +32,26 @@ def check_register(driver, test_string):
     usubmit = driver.find_element_by_css_selector("form[action='/signup/'] >"
                                                   "input[type='submit']")
 
-    uname.send_keys(test_string)
-    upasswd.send_keys(test_string)
-    uemail.send_keys(test_string + "@demo.com")
-    usubmit.click()
+    element_waiter(driver, uname).send_keys(test_string)
+    element_waiter(driver, upasswd).send_keys(test_string)
+    element_waiter(driver, uemail).send_keys(test_string + "@demo.com")
+    element_waiter(driver, usubmit).click()
 
 
 def check_login(driver, test_string):
     """Verify proper working of login form"""
-    uname = driver.find_element_by_css_selector("form[action='/login/'] >"
-                                                "input[name='username']")
+    uname = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR,
+                                        "form[action='/login/'] >"
+                                        "input[name='username']")))
     upasswd = driver.find_element_by_css_selector("form[action='/login/'] >"
                                                   "input[name='password']")
     usubmit = driver.find_element_by_css_selector("form[action='/login/'] >"
                                                   "input[type='submit']")
 
-    uname.send_keys(test_string)
-    upasswd.send_keys(test_string)
-    usubmit.click()
+    element_waiter(driver, uname).send_keys(test_string)
+    element_waiter(driver, upasswd).send_keys(test_string)
+    element_waiter(driver, usubmit).click()
 
 
 def check_add_category(driver, test_string):
@@ -85,8 +91,9 @@ def check_edit_task(driver, taskname, priority):
     """Verify proper working of editing task priority"""
     tasks = driver.find_elements_by_css_selector("div[class='note']")
     for task in tasks:
-        header = task.find_element_by_css_selector("p[class*='noteHeading']")
-        if str(header.text) == taskname:
+        header = driver.find_element_by_css_selector(
+            "div[class='note'] > p[class*='noteHeading']")
+        if str(header.text).strip == taskname:
             edit_btn = task.find_element_by_css_selector(
                 "a[role='menuitem'] > span[class*='glyphicon-pencil']")
             element_waiter(driver, edit_btn).click()
@@ -181,23 +188,34 @@ def main():
 
     # Test cases data
     test_string = "testUser"
-    
-    task_names = []
-    categories = []
+
+    task_names = [namesgenerator.get_random_name() for name in range(6)]
+    categories = ["cat_A", "cat_B"]
 
     # Test cases running
     check_register(driver, test_string)
     check_login(driver, test_string)
-    #check_add_category(driver, "katA")
-    #check_add_category(driver, "katB")
-    #check_add_task(driver, "bbc", "katA", 1)
-    #check_add_task(driver, "agh", "katB", 2)
-    #check_edit_task(driver, "agh", 0)
-    #check_mark_done(driver, "bbc")
-    #check_remove_task(driver, "agh")
-    #checkif_done(driver, "katA", 0)
-    #checkif_removed(driver, "katB", 0)
+
+    check_add_category(driver, categories[0])
+    check_add_category(driver, categories[1])
+
+    for name in task_names:
+        index = task_names.index(name) % 2
+        check_add_task(driver, name, categories[index], random.randint(0, 2))
+
+    check_edit_task(driver, task_names[0], random.randint(0, 2))
+
+    for name in task_names:
+        index = task_names.index(name) % 2
+        if index == 0:
+            check_mark_done(driver, name)
+        else:
+            check_remove_task(driver, name)
+
+    checkif_done(driver, categories[0], (len(task_names)/2))
+    checkif_removed(driver, categories[1], (len(task_names)/2))
     checkif_todo(driver)
+
     check_logout(driver)
 
     raw_input("Press enter key to exit\n")
@@ -206,7 +224,8 @@ def main():
 
 if __name__ == "__main__":
     # CLIENT = docker.APIClient()
-    # APP_IMAGE = CLIENT.build(path=".", tag="sele:latest", rm=True)
+    # APP_IMAGE = CLIENT.build(path=".", tag="app:latest", rm=True)
+
     CLIENT = docker.from_env()
     APP_CONTAINER = CLIENT.containers.run(
         "sele:latest", ports={'8081/tcp': 8081}, detach=True)
