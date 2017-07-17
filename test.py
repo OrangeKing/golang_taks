@@ -10,7 +10,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 
 import docker
-
+from docker import APIClient
 
 def element_waiter(driver, element):
     """Element waiting decorator"""
@@ -179,12 +179,13 @@ def main():
     driver = webdriver.Chrome()
     driver.get("http://localhost:8081")
 
-    #test cases data
-    test_string = "uzr"
+    # Test cases data
+    test_string = "testUser"
+    
     task_names = []
     categories = []
 
-    #test cases running
+    # Test cases running
     check_register(driver, test_string)
     check_login(driver, test_string)
     #check_add_category(driver, "katA")
@@ -204,6 +205,8 @@ def main():
 
 
 if __name__ == "__main__":
+    # CLIENT = docker.APIClient()
+    # APP_IMAGE = CLIENT.build(path=".", tag="sele:latest", rm=True)
     CLIENT = docker.from_env()
     APP_CONTAINER = CLIENT.containers.run(
         "sele:latest", ports={'8081/tcp': 8081}, detach=True)

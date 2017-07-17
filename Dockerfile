@@ -10,6 +10,5 @@ RUN go get github.com/shurcooL/github_flavored_markdown
 RUN git clone https://github.com/thewhitetulip/Tasks.git src/github.com/thewhitetulip/Tasks
 RUN chmod +x src/github.com/thewhitetulip/Tasks/install.sh
 EXPOSE 8081:8081
-#RUN -p 127.0.0.1:8081:8081
 
 CMD /bin/bash src/github.com/thewhitetulip/Tasks/install.sh
