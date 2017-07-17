@@ -135,19 +135,44 @@ def check_remove_task(driver, taskname):
             return
 
 
-def checkif_done():
+def checkif_done(driver, category, task_number):
     """Verify if accurate number of tasks are in done state"""
-    pass
+    driver.get("http://localhost:8081/done")
+    counter = 0
+    tasks = driver.find_elements_by_css_selector("div[class='note']")
+    for task in tasks:
+        task_cat = task.find_element_by_css_selector("a[href*='category']")
+        if str(task_cat.text) == category:
+            counter += 1
+        if counter == task_number:
+            print("Success: correct number of completed for " + str(category))
+        else:
+            print("Failure: wrong number of tasks for " + str(category))
 
 
-def checkif_removed():
+def checkif_removed(driver, category, task_number):
     """Verify if accurate number of tasks are removed"""
-    pass
+    driver.get("http://localhost:8081/deleted")
+    counter = 0
+    tasks = driver.find_elements_by_css_selector("div[class='note']")
+    for task in tasks:
+        task_cat = task.find_element_by_css_selector("a[href*='category']")
+        if str(task_cat.text) == category:
+            counter += 1
+        if counter == task_number:
+            print("Success: correct number of removed for " + str(category))
+        else:
+            print("Failure: wrong number of tasks for " + str(category))
 
 
-def checkif_todo():
+def checkif_todo(driver):
     """Verify if any number of todo-tasks"""
-    pass
+    driver.get("http://localhost:8081/pending")
+    tasks = driver.find_elements_by_css_selector("div[class='note']")
+    if tasks:
+        print("Test failed: tasks found in to-do section")
+    else:
+        print("Test succeed: no tasks pending")
 
 
 def check_logout(driver):
