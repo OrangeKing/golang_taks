@@ -9,12 +9,13 @@ https://github.com/thewhitetulip/Tasks
 
 1. **Install prerequisites:**
 ```shell
-pip2 install selenium docker
+pip2 install requirements.txt
 ```
 Apart from selenium framework, chrome webdriver is needed in a $PATH accessible directory:
 ```
 https://sites.google.com/a/chromium.org/chromedriver/downloads
 ```
+To run app as a proper container, install docker engine (preferably through your package manager)
 
 2. **Clone/fetch project**
 ```shell
