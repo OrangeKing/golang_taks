@@ -229,8 +229,6 @@ def main():
 
 
 if __name__ == "__main__":
-    # CLIENT = docker.APIClient()
-    # APP_IMAGE = CLIENT.build(path=".", tag="app:latest", rm=True)
 
     CLIENT = docker.from_env()
     APP_CONTAINER = CLIENT.containers.run(
