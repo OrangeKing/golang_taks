@@ -184,11 +184,11 @@ def check_logout(driver):
 def main():
     """main script"""
     driver = webdriver.Chrome()
+    driver.implicitly_wait(30)
     driver.get("http://localhost:8081")
 
     # Test cases data
     test_string = "testUser"
-
     task_names = [namesgenerator.get_random_name() for name in range(6)]
     categories = ["cat_A", "cat_B"]
 
@@ -196,15 +196,19 @@ def main():
     check_register(driver, test_string)
     check_login(driver, test_string)
 
+    # Add user defined categories
     check_add_category(driver, categories[0])
     check_add_category(driver, categories[1])
 
+    # Add tasks with random names
     for name in task_names:
         index = task_names.index(name) % 2
         check_add_task(driver, name, categories[index], random.randint(0, 2))
 
+    # Assign single task with a random priority
     check_edit_task(driver, task_names[0], random.randint(0, 2))
 
+    # Remove / complete tasks, according to a category
     for name in task_names:
         index = task_names.index(name) % 2
         if index == 0:
@@ -212,10 +216,12 @@ def main():
         else:
             check_remove_task(driver, name)
 
+    # Check page status after removal / completion operations
     checkif_done(driver, categories[0], (len(task_names)/2))
     checkif_removed(driver, categories[1], (len(task_names)/2))
     checkif_todo(driver)
 
+    # Logout
     check_logout(driver)
 
     raw_input("Press enter key to exit\n")
