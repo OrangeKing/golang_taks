@@ -234,7 +234,9 @@ if __name__ == "__main__":
 
     CLIENT = docker.from_env()
     APP_CONTAINER = CLIENT.containers.run(
-        "sele:latest", ports={'8081/tcp': 8081}, detach=True)
+        "selenium_tutorial:latest", ports={'8081/tcp': 8081}, detach=True,
+        name='selenium_app',
+        volumes={'/home/int_noka/Desktop/python/selenium_tutorial/App': {'bind': '/go/src/github.com/thewhitetulip/Tasks', 'mode': 'rw'}})
     try:
         main()
 
