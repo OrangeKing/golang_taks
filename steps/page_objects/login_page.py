@@ -17,7 +17,3 @@ class LoginPage(LandingPage):
     def press_submit(self):
         submit = self.driver.find_element_by_css_selector(self.submit)
         self.element_waiter(submit).click()
-
-
-    def session_exist(self):
-        return (self.driver.get_cookie('session')) is not None

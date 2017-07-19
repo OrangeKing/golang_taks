@@ -1,5 +1,6 @@
 from behave import given, when, then
 from page_objects.login_page import LoginPage
+from page_objects.home_page import HomePage
 
 
 @when(u"I put '{text}' into '{name}' field on login form")
@@ -16,5 +17,6 @@ def submit_login_form(context):
 
 @then(u'I should be logged in')
 def user_logged(context):
-    login_page = LoginPage(context.driver)
-    assert not(login_page.session_exist() and login_page.is_current_page())
+    home_page = HomePage(context.driver)
+    home_page.driver.refresh()
+    assert (home_page.session_exist() and home_page.is_current_page())
