@@ -15,7 +15,7 @@ def before_all(context):
     #     volumes={
     #         '/home/int_noka/Desktop/python/selenium_tutorial/App':
     #         {'bind': '/go/src/github.com/thewhitetulip/Tasks', 'mode': 'rw'}})
-    # context.driver = webdriver.Chrome()
+    context.driver = webdriver.Chrome()
 
 
 def after_all(context):
