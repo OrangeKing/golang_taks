@@ -1,11 +1,23 @@
 from behave import given, when, then
+from page_objects import database
 
-
-@given("There are no users")
+@given(u"there are no users")
 def db_clear(context):
-    assert context.failed is False
+    database.remove_all_users()
 
 
-@then("there should be user named {username} with password {password} and email {email}")
-def user_create(context, username, password, email):
-    assert context.failed is False
+@given(u"there is a user named '{username}' with password '{password}' and email '{email}'")
+def create_user(context, username, password, email):
+    database.create_user(username, password, email)
+    database.user_exist(username)
+
+
+@then(u"there should be user named '{username}' with password '{password}' and email '{email}'")
+def create_user(context, username, password, email):
+    database.create_user(username, password, email)
+    database.user_exist(username)
+
+
+@then(u"there should be no user named '{username}'")
+def lookup_user(context, username):
+    assert not database.user_exist(username)

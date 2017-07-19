@@ -37,7 +37,6 @@ def check_register(driver, test_string):
     element_waiter(driver, uemail).send_keys(test_string + "@demo.com")
     element_waiter(driver, usubmit).click()
 
-
 def check_login(driver, test_string):
     """Verify proper working of login form"""
     uname = WebDriverWait(driver, 10).until(
@@ -52,7 +51,6 @@ def check_login(driver, test_string):
     element_waiter(driver, uname).send_keys(test_string)
     element_waiter(driver, upasswd).send_keys(test_string)
     element_waiter(driver, usubmit).click()
-
 
 def check_add_category(driver, test_string):
     """Verify proper working of adding categories"""
