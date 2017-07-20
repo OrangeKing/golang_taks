@@ -26,11 +26,11 @@ class TaskForm(HomePage):
         radio_btn = self.driver.find_elements_by_css_selector(self.priority)
 
         if priority == "High":
-            i = 2
+            i = 0
         elif priority == "Medium":
             i = 1
         elif priority == "Low":
-            i = 0
+            i = 2
         else:
             print("No such priority to be selected")
             return False

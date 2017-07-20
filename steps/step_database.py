@@ -11,6 +11,11 @@ def db_clear_categories(context):
     database.remove_all_categories()
 
 
+@given("there are no tasks")
+def db_clear_tasks(context):
+    database.remove_all_tasks()
+
+
 @given("there is a user named '{username}' with password '{password}' and email '{email}'")
 def create_user(context, username, password, email):
     database.create_user(username, password, email)

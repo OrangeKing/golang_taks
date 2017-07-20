@@ -14,6 +14,11 @@ def remove_all_categories():
     db_conn.execute("DELETE from category")
     db_conn.commit()
 
+def remove_all_tasks():
+    db_conn = sqlite3.connect(DB_PATH)
+    db_conn.execute("DELETE from task")
+    db_conn.commit()
+
 
 def user_exist(name, password=None, email=None):
     conn = sqlite3.connect(DB_PATH)
