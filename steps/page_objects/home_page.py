@@ -2,7 +2,7 @@ from page_objects.landing_page import BasePage
 
 
 class HomePage(BasePage):
-    URI = "http://localhost:8081/"
+    URI = "http://localhost:8081"
     def __init__(self, driver):
         self.logout_button = "button[data-original-title='Logout']"
         super(HomePage, self).__init__(driver)

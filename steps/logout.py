@@ -22,5 +22,4 @@ def click_logout(context):
 @then(u'I should be logged out')
 def user_logged_out(context):
     landing_page = LandingPage(context.driver)
-    landing_page.driver.refresh()
-    assert not landing_page.is_current_page()
+    assert landing_page.is_current_page()
