@@ -51,15 +51,14 @@ def category_exist(name):
 def no_category_exist():
     conn = sqlite3.connect(DB_PATH)
     query = "SELECT * from category"
-    
+
     cursor = conn.execute(query)
     result = cursor.fetchall()
 
-    if len(result) != 0:
+    if result != 0:
         print('Number of categories: {}'.format(len(result)))
         return False
-    else:
-        return True
+    return True
 
 
 def create_user(name, password, email):
@@ -72,4 +71,3 @@ def create_category(name, username):
     db_conn = sqlite3.connect(DB_PATH)
     db_conn.execute("INSERT INTO category (name, user_id) VALUES('{}', '{}')".format(name, username))
     db_conn.commit()
-

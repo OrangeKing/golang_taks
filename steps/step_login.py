@@ -3,20 +3,21 @@ from page_objects.login_page import LoginPage
 from page_objects.home_page import HomePage
 
 
-@when(u"I put '{text}' into '{name}' field on login form")
+@when("I put '{text}' into '{name}' field on login form")
 def fill_login_form(context, text, name):
     login_page = LoginPage(context.driver)
     login_page.fill_field(text, name)
 
 
-@when(u"I press submit button on login form")
+@when("I press submit button on login form")
 def submit_login_form(context):
     login_page = LoginPage(context.driver)
     login_page.press_submit()
 
 
-@then(u'I should be logged in')
+@then("I should be logged in")
 def user_logged(context):
     home_page = HomePage(context.driver)
     home_page.driver.refresh()
-    assert (home_page.session_exist() and home_page.is_current_page())
+    assert home_page.session_exist()
+    assert home_page.is_current_page()

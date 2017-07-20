@@ -4,7 +4,7 @@ from page_objects.login_page import LoginPage
 from page_objects.landing_page import LandingPage
 
 
-@given(u"I am logged as '{username}' with password '{password}'")
+@given("I am logged as '{username}' with password '{password}'")
 def log_user(context, username, password):
     LandingPage(context.driver).open()
     login_page = LoginPage(context.driver)
@@ -13,13 +13,13 @@ def log_user(context, username, password):
     login_page.press_submit()
 
 
-@when(u'I click the logout button')
+@when("I click the logout button")
 def click_logout(context):
     home_page = HomePage(context.driver)
     home_page.press_logout()
 
 
-@then(u'I should be logged out')
+@then("I should be logged out")
 def user_logged_out(context):
     landing_page = LandingPage(context.driver)
     assert landing_page.is_current_page()
