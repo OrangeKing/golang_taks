@@ -1,18 +1,20 @@
 from behave import given, when, then
 from page_objects.home_page import HomePage
 
-@when(u'I click the menu button')
-def step_impl(context):
-    raise NotImplementedError(u'STEP: When I click the menu button')
 
-@when(u'I put \'test\' into \'name\' field on category form')
-def step_impl(context):
-    raise NotImplementedError(u'STEP: When I put \'test\' into \'name\' field on category form')
+@when(u"I click the menu button")
+def click_menu(context):
+    home_page = HomePage(context.driver)
+    home_page.press_menu()
 
-@when(u'I press submit button on category form')
-def step_impl(context):
-    raise NotImplementedError(u'STEP: When I press submit button on category form')
 
-@then(u'A new category named \'test\' should be created')
-def step_impl(context):
-    raise NotImplementedError(u'STEP: Then A new category named \'test\' should be created')
+@when(u"I put '{text}' into name field on category form")
+def fill_category(context, text):
+    home_page = HomePage(context.driver)
+    home_page.fill_category(text)
+
+
+@when(u"I press submit button on category form")
+def press_submit(context):
+    home_page = HomePage(context.driver)
+    home_page.press_submit()
