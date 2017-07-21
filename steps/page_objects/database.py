@@ -66,6 +66,18 @@ def no_category_exist():
     return True
 
 
+def no_task_exist():
+    conn = sqlite3.connect(DB_PATH)
+    query = 'SELECT * from task'
+    cursor = conn.execute(query)
+    result = cursor.fetchall()
+
+    if result != 0:
+        print('Number of tasks: {}'.format(len(result)))
+        return False
+    return True
+
+
 def task_exist(name, user):
     conn = sqlite3.connect(DB_PATH)
     query = 'SELECT * from task WHERE title="{}" AND user_id={}'.format(name, get_user_id(user))

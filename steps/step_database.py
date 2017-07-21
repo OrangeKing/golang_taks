@@ -46,12 +46,17 @@ def lookup_category(context, name):
 
 @then("there should be no categories")
 def no_categories(context):
-    database.no_category_exist()
+    assert database.no_category_exist()
 
 
 @then("there should be a task named '{taskname}' for user '{username}'")
 def add_task_verify(context, taskname, username):
     database.task_exist(taskname, username)
+
+
+@then("there should be no tasks")
+def any_task_exist(context):
+    assert database.no_task_exist()
 
 
 @then("the '{taskname}' for user '{username}' should have now priority '{priority}'")
