@@ -2,4 +2,3 @@
 .pylintrc
 *.pyc
 App
-debug.py

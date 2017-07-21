@@ -10,9 +10,8 @@ I should be able to mark previously created task as done
      And there is a task named 'task1' for user 'user1' in category 'cat1' with priority 'Low'
      And I am logged as 'user1' with password 'pass1'
      When I press the complete task button
-     Then there should be a no task named 'task1' in pending page
-     And I go to the completed page
-     And there should be a task named 'task1' in completed page
+     Then there should be completed task 'task1' for user 'user1'
 
-#add goto-verification
-#add sql-verification
+    # Scenario: Manual verification of completing a task
+    #  When I go to the completed page
+    #  And there should be a task named 'task1' in completed page

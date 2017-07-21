@@ -10,9 +10,8 @@ I should be able to remove previously created task
      And there is a task named 'task1' for user 'user1' in category 'cat1' with priority 'Low'
      And I am logged as 'user1' with password 'pass1'
      When I press the remove task button
-     Then there should be a no task named 'task1' in pending page
-     And I go to the removed page
-     And there should be a task named 'task1' in removed page
+     Then there should be deleted task 'task1' for user 'user1'
 
-#add goto-verification
-#add sql-verification
+    # Scenario: Manual verification of deleting a task
+    #  When I go to the deleted page
+    #  And there should be a task named 'task1' in deleted page

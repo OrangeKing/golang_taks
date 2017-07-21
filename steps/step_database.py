@@ -62,3 +62,13 @@ def edit_task_verify_priority(context, taskname, username, priority):
 @given("there is a task named '{taskname}' for user '{username}' in category '{category}' with priority '{priority}'")
 def create_task(context, taskname, username, category, priority):
     database.create_task(taskname, username, category, priority)
+
+
+@then("there should be deleted task '{taskname}' for user '{username}'")
+def confirm_task_del(context, taskname, username):
+    database.task_deleted(taskname, username)
+
+
+@then("there should be completed task '{taskname}' for user '{username}'")
+def confirm_task_done(context, taskname, username):
+    database.task_completed(taskname, username)

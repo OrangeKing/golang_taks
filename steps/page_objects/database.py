@@ -75,6 +75,24 @@ def task_exist(name, user):
     return (name_db == name)
 
 
+def task_completed(taskname, username):
+    conn = sqlite3.connect(DB_PATH)
+    query = 'SELECT * from task WHERE title="{}" AND user_id={} AND task_status_id={}'.format(taskname, get_user_id(username), 1)
+    cursor = conn.execute(query)
+    result = cursor.fetchall()
+    name_db = result[0][1]
+    return (name_db == taskname)
+
+
+def task_deleted(taskname, username):
+    conn = sqlite3.connect(DB_PATH)
+    query = 'SELECT * from task WHERE title="{}" AND user_id={} AND task_status_id={}'.format(taskname, get_user_id(username), 3)
+    cursor = conn.execute(query)
+    result = cursor.fetchall()
+    name_db = result[0][1]
+    return (name_db == taskname)
+
+
 def verify_priority(name, user, priority):
     conn = sqlite3.connect(DB_PATH)
     query = 'SELECT * from task WHERE title="{}" AND user_id={} AND priority={}'.format(name, get_user_id(user), get_priority_value(priority))
