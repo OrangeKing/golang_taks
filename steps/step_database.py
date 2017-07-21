@@ -52,3 +52,13 @@ def no_categories(context):
 @then("there should be a task named '{taskname}' for user '{username}'")
 def add_task_verify(context, taskname, username):
     database.task_exist(taskname, username)
+
+
+@then("the '{taskname}' for user '{username}' should have now priority '{priority}'")
+def edit_task_verify_priority(context, taskname, username, priority):
+    database.verify_priority(taskname, username, priority)
+
+
+@given("there is a task named '{taskname}' for user '{username}' in category '{category}' with priority '{priority}'")
+def create_task(context, taskname, username, category, priority):
+    database.create_task(taskname, username, category, priority)

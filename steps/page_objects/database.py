@@ -75,6 +75,15 @@ def task_exist(name, user):
     return (name_db == name)
 
 
+def verify_priority(name, user, priority):
+    conn = sqlite3.connect(DB_PATH)
+    query = 'SELECT * from task WHERE title="{}" AND user_id={} AND priority={}'.format(name, get_user_id(user), get_priority_value(priority))
+    cursor = conn.execute(query)
+    result = cursor.fetchall()
+    name_db = result[0][1]
+    return (name_db == name)
+
+
 def create_user(name, password, email):
     db_conn = sqlite3.connect(DB_PATH)
     db_conn.execute("INSERT INTO user (username, password, email) VALUES('{}', '{}', '{}')".format(name, password, email))
@@ -92,7 +101,37 @@ def get_user_id(name):
     return result
 
 
+def get_category_id(name, user_id):
+    conn = sqlite3.connect(DB_PATH)
+    query = 'SELECT id from category WHERE name="{}" AND user_id={}'.format(name, user_id)
+    cursor = conn.execute(query)
+    result = cursor.fetchall()
+    result = result[0][0]
+    return result
+
+
+def get_priority_value(priority):
+    if priority == "High":
+        i = 3
+    elif priority == "Medium":
+        i = 2
+    elif priority == "Low":
+        i = 1
+    else:
+        print("No such priority to be selected")
+        return False
+    return i
+
+
 def create_category(name, username):
     db_conn = sqlite3.connect(DB_PATH)
     db_conn.execute("INSERT INTO category (name, user_id) VALUES('{}', {})".format(name, get_user_id(username)))
+    db_conn.commit()
+
+
+def create_task(taskname, username, task_category, task_priority):
+    db_conn = sqlite3.connect(DB_PATH)
+    time = '2001-07-03 13:33:37'
+    db_conn.execute("INSERT INTO task (title, content, task_status_id, created_date, priority, cat_id, user_id, hide) VALUES('{}', '{}', {}, '{}', '{}', {}, {}, {})".format(
+        taskname, '', 2, time, get_priority_value(task_priority), get_category_id(task_category, get_user_id(username)), get_user_id(username), 0))
     db_conn.commit()
