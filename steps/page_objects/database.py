@@ -101,8 +101,7 @@ def task_deleted(taskname, username):
     query = 'SELECT * from task WHERE title="{}" AND user_id={} AND task_status_id={}'.format(taskname, get_user_id(username), 3)
     cursor = conn.execute(query)
     result = cursor.fetchall()
-    name_db = result[0][1]
-    return (name_db == taskname)
+    return bool(result)
 
 
 def verify_priority(name, user, priority):
