@@ -1,4 +1,6 @@
 .vscode
 .pylintrc
 *.pyc
+ghostdriver.log
+screenshot.png
 App

@@ -15,4 +15,3 @@ I should be able to edit any task in specified category with specified priority
      And I select 'High' from priority field on edit form
      And I press submit button on edit form
      Then the 'test' for user 'user1' should have now priority 'High'
-
