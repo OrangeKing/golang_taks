@@ -1,7 +1,8 @@
 import sqlite3
+import os
 
-DB_PATH = '/home/int_noka/Desktop/python/selenium_tutorial/App/tasks.db'
-
+DB_PATH_DEFAULT = '/home/int_noka/Desktop/python/selenium_tutorial/App/tasks.db'
+DB_PATH = os.getenv('DB_PATH', DB_PATH_DEFAULT)
 
 def remove_all_users():
     db_conn = sqlite3.connect(DB_PATH)
@@ -60,7 +61,7 @@ def no_category_exist():
     cursor = conn.execute(query)
     result = cursor.fetchall()
 
-    if result != 0:
+    if len(result) != 0:
         print('Number of categories: {}'.format(len(result)))
         return False
     return True
@@ -72,7 +73,7 @@ def no_task_exist():
     cursor = conn.execute(query)
     result = cursor.fetchall()
 
-    if result != 0:
+    if len(result) != 0:
         print('Number of tasks: {}'.format(len(result)))
         return False
     return True

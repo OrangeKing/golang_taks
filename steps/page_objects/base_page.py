@@ -1,9 +1,13 @@
+import os
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
+
 class BasePage(object):
-    URI = ''
+    URI = os.getenv('IP_ADDRESS', 'http://localhost:8081/')
+
 
     def __init__(self, driver):
         self.driver = driver

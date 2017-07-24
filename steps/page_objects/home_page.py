@@ -2,7 +2,7 @@ from page_objects.base_page import BasePage
 
 
 class HomePage(BasePage):
-    URI = "http://localhost:8081/"
+    URI = BasePage.URI
     def __init__(self, driver):
         self.logout_button = "button[data-original-title='Logout']"
         self.menu_button = "span[class*='glyphicon-align']"
