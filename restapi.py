@@ -35,12 +35,12 @@ class RestfulSession(object):
 
     def update_category(self, oldname, newname):
         self.session.post(
-            'http://localhost:8081/api/update-category/?oldName={}&newName={}'.format(oldname, newname))
+            'http://localhost:8081/api/update-category/{}/?catname={}'.format(oldname, newname))
 
 
     def delete_category(self, category):
-        self.session.post(
-            'http://localhost:8081/api/delete-category/?category={}'.format(category))
+        self.session.get(
+            'http://localhost:8081/api/delete-category/{}'.format(category))
 
 
 # http.HandleFunc("/api/update-category/", views.UpdateCategoryFuncAPI)
@@ -57,10 +57,10 @@ if __name__ == "__main__":
         # RestfulSession('test', 'test', 'test@test').signup()
         S = RestfulSession('test', 'test', 'test@test')
         S.get_token()
-        S.add_category('test_cat')
-        S.add_category('test_cat_2')
-        S.add_category('test_cat_3')
-        S.update_category('test_cat', 'edited_category')
+        # S.add_category('test_cat')
+        # S.add_category('test_cat_2')
+        # S.add_category('test_cat_3')
+        #S.update_category('test_cat', 'edited_category')
         S.delete_category('test_cat_3')
 
     finally:
