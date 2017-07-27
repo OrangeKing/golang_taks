@@ -79,5 +79,11 @@ if __name__ == "__main__":
         S.update_task(1, 'test_cat_2', 'testtask', 'test-content', 3)
         S.delete_task(2)
 
+        categories = S.get_category()
+        tasks = S.get_task()
+
+        print(categories+"\n\n")
+        print(tasks)
+        
     finally:
         system('exit')
