@@ -40,28 +40,44 @@ class RestfulSession(object):
 
     def delete_category(self, category):
         self.session.get(
-            'http://localhost:8081/api/delete-category/{}'.format(category))
+            'http://localhost:8081/api/delete-category/{}/'.format(category))
 
 
-# http.HandleFunc("/api/update-category/", views.UpdateCategoryFuncAPI)
-# http.HandleFunc("/api/delete-category/", views.DeleteCategoryFuncAPI)
+    def get_task(self):
+        tasks = self.session.get('http://localhost:8081/api/get-task/')
+        return tasks.json()
 
-# http.HandleFunc("/api/get-task/", views.GetTasksFuncAPI)
-# http.HandleFunc("/api/get-deleted-task/", views.GetDeletedTaskFuncAPI)
-# http.HandleFunc("/api/add-task/", views.AddTaskFuncAPI)
-# http.HandleFunc("/api/update-task/", views.UpdateTaskFuncAPI)
-# http.HandleFunc("/api/delete-task/", views.DeleteTaskFuncAPI)
+
+    def add_task(self, category, title, content, priority):
+        self.session.post(
+            'http://localhost:8081/api/add-task/?category={}&title={}&content={}&priority={}'.format(category, title, content, priority))
+
+
+    def update_task(self, task_id, category, title, content, priority):
+        self.session.post(
+            'http://localhost:8081/api/update-task/?id={}&category={}&title={}&content={}&priority={}'.format(task_id, category, title, content, priority))
+
+
+    def delete_task(self, task_id):
+        self.session.get(
+            'http://localhost:8081/api/delete-task/{}'.format(task_id))
+
 
 if __name__ == "__main__":
     try:
-        # RestfulSession('test', 'test', 'test@test').signup()
+        RestfulSession('test', 'test', 'test@test').signup()
         S = RestfulSession('test', 'test', 'test@test')
         S.get_token()
-        # S.add_category('test_cat')
-        # S.add_category('test_cat_2')
-        # S.add_category('test_cat_3')
-        #S.update_category('test_cat', 'edited_category')
+        S.add_category('test_cat')
+        S.add_category('test_cat_2')
+        S.add_category('test_cat_3')
+        S.update_category('test_cat', 'edited_category')
         S.delete_category('test_cat_3')
+
+        S.add_task('test_cat_2', 'testtask', ' ', 1)
+        S.add_task('test_cat_2', 'secondtask', 'test-content', 3)
+        S.update_task(1, 'test_cat_2', 'testtask', 'test-content', 3)
+        S.delete_task(2)
 
     finally:
         system('exit')
